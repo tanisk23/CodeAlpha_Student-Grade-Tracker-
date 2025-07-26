@@ -1,5 +1,5 @@
 # CodeAlpha_Student-Grade-Tracker-
-# 🎓 Student Grades Tracker (Java Console App)
+# 🎓 Student Grades Tracker 
 
 A simple Java console application that allows you to input, track, and analyze student grades. Built using core Java concepts, this project demonstrates the use of classes, ArrayLists, user input, and basic statistics.
 
