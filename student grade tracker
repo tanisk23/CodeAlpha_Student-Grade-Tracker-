@@ -3,90 +3,66 @@ import java.util.Scanner;
 
 class Student {
     String name;
-    int score;
+    double grade;
 
-    Student(String name, int score) {
+    Student(String name, double grade) {
         this.name = name;
-        this.score = score;
+        this.grade = grade;
     }
 }
 
 public class StudentGradeManager {
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         ArrayList<Student> students = new ArrayList<>();
 
-        int numberOfStudents = -1;
-        while (numberOfStudents <= 0) {
-            System.out.print("Enter the number of students: ");
-            while (!scanner.hasNextInt()) {
-                System.out.println("Invalid input. Please enter a valid number.");
-                scanner.next();
-            }
-            numberOfStudents = scanner.nextInt();
-            if (numberOfStudents <= 0) {
-                System.out.println("Number must be greater than 0.");
-            }
-        }
-        scanner.nextLine(); // consume newline
+        System.out.print("Enter number of students: ");
+        int count = scanner.nextInt();
+        scanner.nextLine();  // consume leftover newline
 
-        // Input student data
-        for (int i = 0; i < numberOfStudents; i++) {
-            System.out.println("\nStudent " + (i + 1) + ":");
-
-            System.out.print("Enter name: ");
-            String name = scanner.nextLine().trim();
-            while (name.isEmpty()) {
-                System.out.println("Name cannot be empty. Please enter again:");
-                name = scanner.nextLine().trim();
-            }
-
-            int score = -1;
-            while (score < 0 || score > 100) {
-                System.out.print("Enter score (0–100): ");
-                while (!scanner.hasNextInt()) {
-                    System.out.println("Invalid input. Please enter a number.");
-                    scanner.next(); // discard invalid input
-                }
-                score = scanner.nextInt();
-                if (score < 0 || score > 100) {
-                    System.out.println("Score must be between 0 and 100.");
-                }
-            }
-            scanner.nextLine(); // consume newline
-
-            students.add(new Student(name, score));
+        for (int i = 0; i < count; i++) {
+            System.out.println("\nEnter details for student " + (i + 1) + ":");
+            System.out.print("Name: ");
+            String name = scanner.nextLine();
+            System.out.print("Grade: ");
+            double grade = scanner.nextDouble();
+            scanner.nextLine(); // consume leftover newline
+            students.add(new Student(name, grade));
         }
 
-        // Process grades
-        int total = 0;
-        int highest = students.get(0).score;
-        int lowest = students.get(0).score;
-        String topStudent = students.get(0).name;
-        String lowStudent = students.get(0).name;
+        // Initialize statistics
+        double total = 0;
+        double highest = Double.MIN_VALUE;
+        double lowest = Double.MAX_VALUE;
+        String highestScorer = "", lowestScorer = "";
 
-        for (Student s : students) {
-            total += s.score;
-            if (s.score > highest) {
-                highest = s.score;
-                topStudent = s.name;
+        // Calculate statistics
+        for (Student student : students) {
+            total += student.grade;
+
+            if (student.grade > highest) {
+                highest = student.grade;
+                highestScorer = student.name;
             }
-            if (s.score < lowest) {
-                lowest = s.score;
-                lowStudent = s.name;
+
+            if (student.grade < lowest) {
+                lowest = student.grade;
+                lowestScorer = student.name;
             }
         }
 
-        double average = (double) total / students.size();
+        double average = total / students.size();
 
         // Display summary
-        System.out.println("\n=== Summary Report ===");
-        for (Student s : students) {
-            System.out.println(s.name + " - Score: " + s.score);
+        System.out.println("\n--- Summary Report ---");
+        for (Student student : students) {
+            System.out.println(student.name + " scored: " + student.grade);
         }
-        System.out.println("\nAverage Score: " + average);
-        System.out.println("Highest Score: " + highest + " (by " + topStudent + ")");
-        System.out.println("Lowest Score: " + lowest + " (by " + lowStudent + ")");
+
+        System.out.printf("\nAverage Score: %.2f\n", average);
+        System.out.println("Highest Score: " + highest + " by " + highestScorer);
+        System.out.println("Lowest Score: " + lowest + " by " + lowestScorer);
 
         scanner.close();
     }
